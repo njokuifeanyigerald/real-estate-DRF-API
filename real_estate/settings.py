@@ -16,7 +16,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'bjaSJaiu237238^@%!{}mdefsaj,.??wdyqd215'
+SECRET_KEY = 'bjaSJaiu237238^@%!mdefsaj,.??wdyqd215'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -192,12 +192,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS
 CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOWED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
-    "http://localhost:8080",
-    "http://127.0.0.1:9000",
-]
 
 CORS_ALLOW_METHODS = [
     "DELETE",
@@ -221,7 +215,9 @@ CORS_ALLOW_HEADERS = [
 ]
 
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 import django_heroku
 
 django_heroku.settings(locals())

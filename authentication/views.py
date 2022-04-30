@@ -1,11 +1,9 @@
 from multiprocessing import AuthenticationError
-from rest_framework.views import APIView
 from rest_framework import generics, permissions, status, response
 from .models import User
 from .serializer import RegisterSerializer, LoginSerializer, LogoutSerializer
 from .renderers import userRenderer
 
-from django.contrib import auth
 from django.contrib.auth import authenticate
 
 
