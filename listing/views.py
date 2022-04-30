@@ -1,5 +1,3 @@
-import email
-from itsdangerous import Serializer
 from rest_framework.views import APIView
 from .models import ListingModel
 from rest_framework import status, response, generics, permissions
