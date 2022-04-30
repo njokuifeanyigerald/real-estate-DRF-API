@@ -99,9 +99,6 @@ class LogoutSerializer(serializers.Serializer):
     def save(self, **kwargs):
         try:
             RefreshToken(self.token).blacklist()
-            # me =  RefreshToken.for_user(self)
-            # me.access_token.blacklist()
-
         except TokenError:
             self.fail('bad_token ')
 

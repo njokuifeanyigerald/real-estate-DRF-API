@@ -3,11 +3,11 @@ from itsdangerous import Serializer
 from rest_framework.views import APIView
 from .models import ListingModel
 from rest_framework import status, response, generics, permissions
-from .serializer import ListingSerializer, ListingsSerializer
+from .serializer import  ListingsSerializer
 from rest_framework.generics import ListCreateAPIView
 
 
-
+from django.contrib.postgres.search import SearchQuery, SearchVector
 
 
 # a view for only realtors
@@ -38,105 +38,113 @@ class ManageListingView(APIView):
 
 
     def post(self, request, format=None):
-        try:
-            user = request.user
+        # try:
+        user = request.user
 
-            if not user.is_realtor:
-                return response.Response({'error': 'user is not a realtor'}, 
-                        status=status.HTTP_403_FORBIDDEN)
+        if not user.is_realtor:
+            return response.Response({'error': 'user is not a realtor'}, 
+                    status=status.HTTP_403_FORBIDDEN)
 
 
-            data = request.data
-            title = data['title']
-            slug = data['slug']
-            if ListingModel.objects.filter(slug=slug):
-                return response.Response({
-                    'error':' Listing with slug already exists'}, status=status.HTTP_400_BAD_REQUEST
-                )
-
-            address = data['address']
-            city = data['city']
-            state = data['state']
-            zipcode = data['zipcode']
-            description = data['description']
-
-            price = data['price']
-            try:
-                price = int(price)
-            except:
-                return response.Response({'error', 'price must be an integer'},
-                    status=status.HTTP_400_BAD_REQUEST)
-            bedrooms = data['bedrooms']
-            try:
-                bedrooms = float(bedrooms)
-            except:
-                return response.Response({'error', 'bedrooms must be a floating value'},
-                    status=status.HTTP_400_BAD_REQUEST)
-
-            
-            if bedrooms <= 0  or bathrooms >= 10:
-                bathrooms = 1.0
-            
-            bathrooms = round(bathrooms, 1)
-
-            sale_type = data['sale_type']
-
-            if sale_type == 'FOR_RENT':
-                sale_type = 'For Rent'
-            else:
-                sale_type = 'For Sale'
-
-            home_type = data['home_type']
-            if (home_type == 'CONDO' or home_type == 
-                    'condo' or home_type == 'Condo'):
-                home_type = 'Condo'
-            elif (home_type =='TOWNHOUSE' or 
-                    home_type== 'townhouse' or home_type=='Townhouse'):
-                home_type = 'Townhouse'
-            else:
-                home_type = 'House'
-            
-            main_photo = data['main_photo']
-            photo1 = data['photo1']
-            photo2 = data['photo2']
-            photo3 = data['photo3']
-
-            is_published = data['is_published']
-            # tried is using isupper(), it didn't work then
-            # I went old school
-            if  is_published == 'true' or is_published == 'True':
-                is_published = True
-            else:
-                is_published = False
-                
-
-            ListingModel.objects.create(
-
-                realtor = user.email,
-                title = title,
-                slug=slug,
-                address=address,
-                city=city,
-                state=state,
-                zipcode = zipcode,
-                description = description,
-                price = price,
-                bedrooms = bedrooms,
-                bathrooms=bathrooms,
-                sale_type = sale_type,
-                home_type=home_type,
-                main_photo =main_photo,
-                photo1 = photo1,
-                photo2 = photo2,
-                photo3=photo3,
-                is_published=is_published
-
+        data = request.data
+        title = data['title']
+        slug = data['slug']
+        if ListingModel.objects.filter(slug=slug):
+            return response.Response({
+                'error':' Listing with slug already exists'}, status=status.HTTP_400_BAD_REQUEST
             )
-            return response.Response({'success':' Listing created successfully'}, status=status.HTTP_201_CREATED)
-            
+
+        address = data['address']
+        city = data['city']
+        state = data['state']
+        zipcode = data['zipcode']
+        description = data['description']
+
+        price = data['price']
+        try:
+            price = int(price)
         except:
-            return response.Response({'error', 'something went wrong when creating listing'},
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
+            return response.Response({'error', 'price must be an integer'},
+                status=status.HTTP_400_BAD_REQUEST)
+
+        bedrooms = data['bedrooms']
+        try:
+            bedrooms = int(bedrooms)
+        except:
+            return response.Response({'error', 'bedrooms must be a integer value'},
+                status=status.HTTP_400_BAD_REQUEST)
+
+
+
+        bathrooms = data['bathrooms']
+        try:
+            bathrooms = float(bathrooms)
+        except:
+            return response.Response({'error', 'bathrooms must be a floating value'},
+                status=status.HTTP_400_BAD_REQUEST)
+        if bedrooms <= 0  or bathrooms >= 10:
+            bathrooms = 1.0
+        
+        bathrooms = round(bathrooms, 1)
+
+        sale_type = data['sale_type']
+
+        if sale_type == 'FOR_RENT':
+            sale_type = 'For Rent'
+        else:
+            sale_type = 'For Sale'
+
+        home_type = data['home_type']
+        if (home_type == 'CONDO' or home_type == 
+                'condo' or home_type == 'Condo'):
+            home_type = 'Condo'
+        elif (home_type =='TOWNHOUSE' or 
+                home_type== 'townhouse' or home_type=='Townhouse'):
+            home_type = 'Townhouse'
+        else:
+            home_type = 'House'
+        
+        main_photo = data['main_photo']
+        photo1 = data['photo1']
+        photo2 = data['photo2']
+        photo3 = data['photo3']
+
+        is_published = data['is_published']
+        # tried is using isupper(), it didn't work then
+        # I went old school
+        if  is_published == 'true' or is_published == 'True':
+            is_published = True
+        else:
+            is_published = False
+            
+
+        ListingModel.objects.create(
+
+            realtor = user.email,
+            title = title,
+            slug=slug,
+            address=address,
+            city=city,
+            state=state,
+            zipcode = zipcode,
+            description = description,
+            price = price,
+            bedrooms = bedrooms,
+            bathrooms=bathrooms,
+            sale_type = sale_type,
+            home_type=home_type,
+            main_photo =main_photo,
+            photo1 = photo1,
+            photo2 = photo2,
+            photo3=photo3,
+            is_published=is_published
+
+        )
+        return response.Response({'success':' Listing created successfully'}, status=status.HTTP_201_CREATED)
+        
+        # except:
+        #     return response.Response({'error', 'something went wrong when creating listing'},
+        #             status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
 
     
     def put(self, request, format=None):
@@ -162,14 +170,21 @@ class ManageListingView(APIView):
         except:
             return response.Response({'error', 'price must be an integer'},
                 status=status.HTTP_400_BAD_REQUEST)
+
+
         bedrooms = data['bedrooms']
         try:
-            bedrooms = float(bedrooms)
+            bedrooms = int(bedrooms)
         except:
-            return response.Response({'error', 'bedrooms must be a floating value'},
+            return response.Response({'error', 'bedrooms must be a integer value'},
                 status=status.HTTP_400_BAD_REQUEST)
 
-        
+        bathrooms = data['bathrooms']
+        try:
+            bathrooms = float(bathrooms)
+        except:
+            return response.Response({'error', 'bathrooms must be a floating value'},
+                status=status.HTTP_400_BAD_REQUEST)
         if bedrooms <= 0  or bathrooms >= 10:
             bathrooms = 1.0
         
@@ -331,11 +346,19 @@ class SearchView(APIView):
         try:
             search = request.query_params.get('search')
 
-            listing = ListingModel.objects.filter(
-                title__search = search
+
+            vector = SearchVector('title', 'description', 'state', 'city', 'bedrooms','bathrooms')
+            query = SearchQuery(search)
+            if not (ListingModel.objects.annotate(search = vector)
+                        .filter(search = query,is_published = True)):
+                return response.Response({'error': 'search for listings not found'}, status=status.HTTP_404_NOT_FOUND)
+            listing = ListingModel.objects.annotate(
+               search = vector).filter(
+                search = query,
+                is_published = True
             )
-            print(listing)
-            for listing
+            serializer = ListingsSerializer(listing, many=True)
+            return response.Response({'success': serializer.data}, status=status.HTTP_200_OK)
         except:
             return response.Response({'error', 'something went wrong when retriveing listing'},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR)  

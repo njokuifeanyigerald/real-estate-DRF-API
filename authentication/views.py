@@ -2,7 +2,7 @@ from multiprocessing import AuthenticationError
 from rest_framework.views import APIView
 from rest_framework import generics, permissions, status, response
 from .models import User
-from .serializer import RegisterSerializer, LoginSerializer
+from .serializer import RegisterSerializer, LoginSerializer, LogoutSerializer
 from .renderers import userRenderer
 
 from django.contrib import auth
@@ -44,3 +44,14 @@ class LoginAPIView(generics.GenericAPIView):
             return response.Response(serializer.data, status=status.HTTP_200_OK)
         return response.Response({'error': 'credentials are not valid'}, status=status.HTTP_401_UNAUTHORIZED)
         
+
+class LogoutView(generics.GenericAPIView):
+    serializer_class = LogoutSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self,request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return response.Response({'success': 'successfully logged out'}, status=status.HTTP_204_NO_CONTENT)
+  

@@ -12,6 +12,10 @@ drf-yasg = "*"
 djangorestframework-simplejwt = "*"
 python-environ = "*"
 django-cors-headers = "*"
+whitenoise = "*"
+django-heroku = "*"
+dj-database-url = "*"
+gunicorn = "*"
 
 [dev-packages]
 
