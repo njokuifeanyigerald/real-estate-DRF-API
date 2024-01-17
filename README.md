@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # real-estate-DRF-API
 built a real estate api that contains listing, users and realtor with search properties
 ![Screenshot (117)](https://user-images.githubusercontent.com/46121207/166107985-692bb119-e915-4635-ac48-c6ac8f654672.png)
@@ -21,15 +20,6 @@ pipenv shell
 pipenv install django djangorestframework pillow psycopg2 djangorestframework-simplejwt python-environ django-cors-headers 
 ```
 
-**HEROKU**
-
-```xml
-django-heroku dj-database-url gunicorn  whitenoise
-```
-[RealEstate API Website](https://drfrealestate.heokuapp.com/)
-
-
-=======
 # real-estate-DRF-API
 built a real estate api that contains listing, users and realtor with search properties
 ![Screenshot (117)](https://user-images.githubusercontent.com/46121207/166107985-692bb119-e915-4635-ac48-c6ac8f654672.png)
@@ -40,4 +30,3 @@ remember to collectstatic
 ```bash
 python manage.py collectstatic
 ```
->>>>>>> ddf020c (trying to push to render)
