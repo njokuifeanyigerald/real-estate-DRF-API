@@ -30,3 +30,6 @@ remember to collectstatic
 ```bash
 python manage.py collectstatic
 ```
+
+
+in order to deploy to render  - go [Here](https://kowe.io/guide/how-to-deploy-a-django-app-on-render)
