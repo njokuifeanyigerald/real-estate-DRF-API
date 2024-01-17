@@ -1,6 +1,6 @@
 # real-estate-DRF-API
 built a real estate api that contains listing, users and realtor with search properties
-![Screenshot (117)](https://user-images.githubusercontent.com/46121207/166107985-692bb119-e915-4635-ac48-c6ac8f654672.png)
+![Screenshot from 2024-01-17 13-19-15](https://github.com/njokuifeanyigerald/real-estate-DRF-API/assets/46121207/5eb85473-1de3-453a-bf24-3d3d8d168edc)
 
 ## What is it all about
 Realtors have to register and login to create a house or land for  either sell  or rent, then consumers or unthenticated users will go to the API and view each listing and can still be able to search for listings in the API.
