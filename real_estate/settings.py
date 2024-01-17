@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-import environ
 import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -92,6 +91,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     # heroku
     'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -128,7 +128,7 @@ WSGI_APPLICATION = 'real_estate.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'real_estate',
+        'NAME': 'real-estate',
         'USER': 'postgres',
         'PASSWORD': '12345',
         'HOST': 'localhost'
@@ -215,10 +215,10 @@ CORS_ALLOW_HEADERS = [
 ]
 
 
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
-import django_heroku
+# import django_heroku
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
 

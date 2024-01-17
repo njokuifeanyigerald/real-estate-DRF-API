@@ -36,10 +36,10 @@ class ListingModel(models.Model):
     # so we can delete the actual data like the images
     # in the database
     def delete(self):
-        self.main_photo.storge.delete(self.main_photo.name)
-        self.photo1.storge.delete(self.photo1.name)
-        self.photo2.storge.delete(self.photo2.name)
-        self.photo3.storge.delete(self.photo3.name)
+        self.main_photo.storage.delete(self.main_photo.name)
+        self.photo1.storage.delete(self.photo1.name)
+        self.photo2.storage.delete(self.photo2.name)
+        self.photo3.storage.delete(self.photo3.name)
 
         super().delete()
 
