@@ -23,7 +23,7 @@ SECRET_KEY = 'os.environ.getwdkjwqw&#&*@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','https://drf-realestate.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','drf-realestate.onrender.com']
 
 
 # Application definition
